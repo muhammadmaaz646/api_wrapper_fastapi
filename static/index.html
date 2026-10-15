@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini API Wrapper</title>
+    <link rel="stylesheet" href="tokens.css">
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+    <!-- User Interface -->
+    <!-- Define the HTML structure for the user interaction elements. -->
+    <h1>Gemini API Wrapper</h1>
+    <textarea id="prompt" class="c-textarea" placeholder="Enter your prompt here..."></textarea>
+    <div class="buttons">
+        <button class="c-button" onclick="generateSync()">Generate (Sync)</button>
+        <button class="c-button" onclick="generateAsync()">Generate (Async)</button>
+    </div>
+    <div id="result" class="c-result">Result will appear here...</div>
+
+    <script>
+
+        <!-- Helper function for validation -->
+        function validatePrompt(prompt, resDisplay) {
+            if (!prompt || !prompt.trim()) {
+                resDisplay.innerText = "Error: Prompt cannot be empty.";
+                return false;
+            }
+            return true;
+        }
+
+        <!-- Sync generation script -->
+        <!-- Send a prompt to the server and display the generated result synchronously. -->
+        async function generateSync() {
+            const prompt = document.getElementById('prompt').value;
+            const resDisplay = document.getElementById('result');
+            
+            if (!validatePrompt(prompt, resDisplay)) return;
+
+            resDisplay.innerText = "Generating (Sync)...";
+            const response = await fetch('/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt })
+            });
+            const data = await response.json();
+            resDisplay.innerText = data.result || JSON.stringify(data);
+        }
+
+
+
+        <!-- Async generation script -->
+        <!-- Submit a prompt, receive a job ID, and initiate polling for the asynchronous result. -->
+        async function generateAsync() {
+            const prompt = document.getElementById('prompt').value;
+            const resDisplay = document.getElementById('result');
+            
+            if (!validatePrompt(prompt, resDisplay)) return;
+            
+            resDisplay.innerText = "Job submitted. Waiting for result...";
+            
+            const response = await fetch('/generate/async', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt })
+            });
+            const data = await response.json();
+            
+            if (data.status === 'accepted') {
+                pollJob(data.job_id);
+            } else {
+                resDisplay.innerText = "Error: " + JSON.stringify(data);
+            }
+        }
+
+
+
+        <!-- Job polling script -->
+        <!-- Periodically fetch the job status from the server until completion or failure. -->
+        async function pollJob(jobId) {
+            const resDisplay = document.getElementById('result');
+            const interval = setInterval(async () => {
+                const response = await fetch('/job/' + jobId);
+                const data = await response.json();
+                
+                if (data.status === 'completed') {
+                    clearInterval(interval);
+                    resDisplay.innerText = data.result;
+                } else if (data.status === 'failed') {
+                    clearInterval(interval);
+                    resDisplay.innerText = "Error: " + data.error;
+                }
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

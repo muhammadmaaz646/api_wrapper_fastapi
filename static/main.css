@@ -1,0 +1,46 @@
+/* Hallmark · macrostructure: Workbench · tone: utilitarian · anchor hue: cobalt · pre-emit critique: P5 H4 E5 S4 R5 V4 */
+@import "tokens.css";
+
+body {
+    background-color: var(--color-paper);
+    color: var(--color-foreground);
+    font-family: var(--font-display);
+    max-width: 800px;
+    margin: var(--space-lg) auto;
+    padding: 0 var(--space-md);
+}
+
+.c-button {
+    background-color: var(--color-accent);
+    color: white;
+    padding: var(--space-sm) var(--space-md);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-family: var(--font-display);
+}
+
+.c-button:hover, .c-button.is-hover { background-color: var(--color-accent-hover); }
+.c-button:focus-visible, .c-button.is-focus { outline: 2px solid var(--color-foreground); outline-offset: 2px; }
+.c-button:active, .c-button.is-active { transform: translateY(1px); }
+.c-button:disabled { opacity: 0.5; cursor: not-allowed; }
+.c-button[data-state="loading"] { background-color: var(--color-paper-3); color: var(--color-foreground); }
+.c-button[data-state="error"] { background-color: var(--color-error); }
+.c-button[data-state="success"] { background-color: var(--color-success); }
+
+.c-textarea {
+    width: 100%;
+    padding: var(--space-md);
+    border: 1px solid var(--color-paper-3);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-md);
+    font-family: var(--font-mono);
+}
+
+.c-result {
+    margin-top: var(--space-lg);
+    padding: var(--space-md);
+    border: 1px solid var(--color-paper-3);
+    background: var(--color-paper-2);
+    min-height: 3rem;
+}

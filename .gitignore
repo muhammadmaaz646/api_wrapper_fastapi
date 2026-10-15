@@ -3,3 +3,5 @@ venv/
 .venv/
 __pycache__/
 *.pyc
+MAAZ-NOTES.md
+HALLMARK-REPORT.md 

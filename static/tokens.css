@@ -1,0 +1,16 @@
+:root {
+    --color-paper: oklch(98% 0.01 240);
+    --color-paper-2: oklch(96% 0.02 240);
+    --color-paper-3: oklch(92% 0.03 240);
+    --color-foreground: oklch(20% 0.02 240);
+    --color-accent: oklch(60% 0.15 240);
+    --color-accent-hover: oklch(50% 0.2 240);
+    --color-error: oklch(50% 0.15 30);
+    --color-success: oklch(60% 0.15 150);
+    --font-display: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 2rem;
+    --radius-md: 4px;
+}
